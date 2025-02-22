@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام تسجيل الشركات</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .dark-mode {
+            background-color: #1a1a1a;
+            color: #e5e7eb !important;
+        }
+
+        .dark-mode input,
+        .dark-mode select,
+        .dark-mode button,
+        .dark-mode .section-box {
+            background-color: #2d2d2d !important;
+            color: #e5e7eb !important;
+            border-color: #4b5563 !important;
+        }
+
+        .dark-mode input::placeholder {
+            color: #9ca3af !important;
+        }
+
+        .dark-mode .spinner {
+            border-top-color: #3b82f6 !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <button id="darkModeToggle" class="fixed p-2 m-4 bg-gray-800 text-white rounded-md shadow-lg z-50">
+        <span class="light-text">🌙 الوضع الداكن</span>
+        <span class="dark-text hidden">☀️ الوضع الفاتح</span>
+    </button>
+
+    <main class="container mx-auto p-5 pt-16">
+        <section class="max-w-2xl mx-auto bg-white p-8 rounded-xl shadow-lg animate__animated animate__fadeIn section-box">
+            <header class="mb-8">
+                <h1 class="text-3xl font-bold text-center text-blue-600">نظام تسجيل الشركات</h1>
+            </header>
+
+            <form id="registrationForm" class="space-y-6">
+                <!-- Company Info -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">اسم الشركة</label>
+                        <input type="text" id="companyName" required 
+                            class="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">رقم السجل التجاري</label>
+                        <input type="text" id="crNumber" required 
+                            class="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 transition">
+                    </div>
+                </div>
+
+                <!-- Contact Info -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">البريد الإلكتروني</label>
+                        <input type="email" id="email" required 
+                            class="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 transition">
+                        <p id="emailError" class="text-red-500 text-sm hidden mt-1">البريد الإلكتروني غير صحيح</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">رقم الهاتف</label>
+                        <input type="tel" id="phone" required 
+                            class="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 transition">
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">كلمة المرور</label>
+                        <input type="password" id="password" required 
+                            class="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 transition">
+                        <p id="passwordError" class="text-red-500 text-sm hidden mt-1">يجب أن تحتوي على حرف كبير ورقم</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">تأكيد كلمة المرور</label>
+                        <input type="password" id="confirmPassword" required 
+                            class="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 transition">
+                        <p id="confirmError" class="text-red-500 text-sm hidden mt-1">كلمات المرور غير متطابقة</p>
+                    </div>
+                </div>
+
+                <!-- Address -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2">المدينة</label>
+                        <input type="text" id="city" required 
+                            class="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">المنطقة</label>
+                        <input type="text" id="region" required 
+                            class="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2">الرمز البريدي</label>
+                        <input type="text" id="zipCode" required 
+                            class="w-full p-3 border rounded-md focus:ring-2 focus:ring-blue-500 transition">
+                    </div>
+                </div>
+
+                <!-- Business Type -->
+                <div>
+                    <label class="block text-sm font-medium mb-2">نوع النشاط</label>
+                    <select id="businessType" class="w-full p-3 border rounded-md bg-white">
+                        <option value="retail">تجارة التجزئة</option>
+                        <option value="wholesale">تجارة الجملة</option>
+                        <option value="services">الخدمات</option>
+                    </select>
+                </div>
+
+                <!-- Terms -->
+                <div class="flex items-center">
+                    <input type="checkbox" id="terms" class="mr-2 w-4 h-4">
+                    <label class="text-sm">أوافق على الشروط والأحكام</label>
+                </div>
+
+                <button type="submit" class="w-full py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                    تسجيل الشركة
+                </button>
+            </form>
+
+            <!-- OTP Section -->
+            <div id="otpSection" class="hidden mt-6 p-6 bg-gray-50 rounded-lg">
+                <h3 class="text-lg font-semibold mb-4">التحقق ب OTP</h3>
+                <input type="text" id="otpInput" placeholder="أدخل الرمز المكون من 6 أرقام" 
+                    class="w-full p-3 border rounded-md mb-4">
+                <button id="verifyOtp" class="w-full py-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition">
+                    تأكيد
+                </button>
+                <p id="otpError" class="text-red-500 text-sm hidden mt-2">الرمز غير صحيح!</p>
+            </div>
+
+            <!-- Loading -->
+            <div id="loading" class="hidden text-center py-8">
+                <div class="spinner mx-auto"></div>
+                <p class="mt-4 text-gray-600">جاري معالجة البيانات...</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Dark Mode
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const lightText = document.querySelector('.light-text');
+        const darkText = document.querySelector('.dark-text');
+        
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            lightText.classList.toggle('hidden');
+            darkText.classList.toggle('hidden');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        }
+
+        if (localStorage.getItem('darkMode') === 'true') {
+            toggleDarkMode();
+        }
+
+        darkModeToggle.addEventListener('click', toggleDarkMode);
+
+        // Form Validation
+        const validate = {
+            email: email => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email),
+            password: pass => /(?=.*[A-Z])(?=.*\d)/.test(pass),
+            phone: phone => /^05\d{8}$/.test(phone)
+        };
+
+        // Form Submission
+        document.getElementById('registrationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Show loading
+            document.getElementById('loading').classList.remove('hidden');
+            
+            // Simulate API call
+            setTimeout(() => {
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('otpSection').classList.remove('hidden');
+                alert('تم إرسال رمز OTP إلى بريدك الإلكتروني (123456)');
+            }, 2000);
+        });
+
+        // OTP Verification
+        document.getElementById('verifyOtp').addEventListener('click', () => {
+            const otp = document.getElementById('otpInput').value;
+            if(otp === '123456') {
+                alert('تم التسجيل بنجاح!');
+                window.location.reload();
+            } else {
+                document.getElementById('otpError').classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
